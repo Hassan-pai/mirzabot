@@ -1,0 +1,13 @@
+# .dockerignore
+.git
+.github
+*.md
+!README_DEPLOY.md
+vendor
+node_modules
+error_log*
+*.sql
+*.zip
+.env
+.env.*
+!.env.example
