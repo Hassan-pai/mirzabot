@@ -1,0 +1,47 @@
+# Local test stack – NOT for production.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+services:
+  db:
+    image: mysql:8.0
+    command: ["--default-authentication-plugin=mysql_native_password",
+              "--character-set-server=utf8mb4",
+              "--collation-server=utf8mb4_unicode_ci"]
+    environment:
+      MYSQL_ROOT_PASSWORD: mirza_root_pass
+      MYSQL_DATABASE: mirzabot
+    volumes:
+      - mirza-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      PORT: "8080"
+      TZ: "Asia/Tehran"
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: mirzabot
+      DB_USER: root
+      DB_PASS: mirza_root_pass
+      DB_LEAST_PRIVILEGE: "true"
+      # localhost is not reachable by Telegram – keep the webhook off locally
+      SET_WEBHOOK: "false"
+      DOMAIN: "http://localhost:8080"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  mirza-db:
