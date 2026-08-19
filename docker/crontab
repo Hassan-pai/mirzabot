@@ -1,0 +1,22 @@
+# MirzaBot – container crontab (used when CRON_MODE=cron)
+# SPDX-License-Identifier: AGPL-3.0-or-later
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+*   * * * * /opt/mirza/run_cron.sh croncard.php
+*   * * * * /opt/mirza/run_cron.sh iranpay1.php
+*   * * * * /opt/mirza/run_cron.sh sendmessage.php
+*/2 * * * * /opt/mirza/run_cron.sh plisio.php
+*/5 * * * * /opt/mirza/run_cron.sh payment_expire.php
+*/5 * * * * /opt/mirza/run_cron.sh on_hold.php
+*/5 * * * * /opt/mirza/run_cron.sh activeconfig.php
+*/5 * * * * /opt/mirza/run_cron.sh disableconfig.php
+*/5 * * * * /opt/mirza/run_cron.sh uptime_panel.php
+*/5 * * * * /opt/mirza/run_cron.sh uptime_node.php
+*/10 * * * * /opt/mirza/run_cron.sh NoticationsService.php
+*/30 * * * * /opt/mirza/run_cron.sh configtest.php
+0   * * * * /opt/mirza/run_cron.sh gift.php
+0   * * * * /opt/mirza/run_cron.sh lottery.php
+5   0 * * * /opt/mirza/run_cron.sh expireagent.php
+55 23 * * * /opt/mirza/run_cron.sh statusday.php
+0   3 * * * /opt/mirza/run_cron.sh backupbot.php
